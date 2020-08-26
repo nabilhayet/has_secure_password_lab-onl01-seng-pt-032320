@@ -1,14 +1,26 @@
 class UsersController < ApplicationController
 
     def new 
-        user = User.new 
+       user = User.new 
     end 
 
     def create
-        User.create(user_params)
+
+        @user = User.new(user_params)
+        if @user.save
+            session[:user_id] = @user.id 
+        else 
+            redirect_to "/signup"
+        end 
     end
 
-    def home
+    def show 
+        @user = current_user 
+        if @user 
+            render :home
+        else 
+            redirect_to "/login"
+        end 
     end 
      
       private
